@@ -93,6 +93,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public MessageResponse enableUser(Long id) {
+        Optional<UserCredential> userCredential = userCredentialRepository.findById(id);
+        if(userCredential.isEmpty()) throw new EntityNotFoundException("User not in database");
+        userCredential.get().setDisabled(false);
+        userCredential.get().setDisabledAt(null);
+        userCredentialRepository.save(userCredential.get());
+        return new MessageResponse("User Enabled");
+    }
+
+    @Override
     public List<User> getAllUsers() {
         List<UserCredential> userCredentials = userCredentialRepository.findAll();
         if(userCredentials.isEmpty()) throw new EntityNotFoundException("No users have been made");
