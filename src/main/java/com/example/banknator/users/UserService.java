@@ -13,5 +13,5 @@ public interface UserService {
     void updateUserInformation(UpdateUserInformation request);
     MessageResponse disableUser(Long id);
     List<User> getAllUsers();
-    User getUserById(Long id);
+    Optional<User> getUserById(Long id);
 }

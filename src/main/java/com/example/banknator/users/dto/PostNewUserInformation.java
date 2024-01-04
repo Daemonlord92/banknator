@@ -8,9 +8,9 @@ public record PostNewUserInformation(
         String email,
         String password,
         String address,
-        Long phone,
+        long phone,
         Integer creditScore,
-        LocalDate dateOfBirth
+        String dateOfBirth
 ) {
 
 }
