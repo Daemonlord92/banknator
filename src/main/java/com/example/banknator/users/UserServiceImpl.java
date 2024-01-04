@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -53,7 +54,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserInformation(UpdateUserInformation request) {
-
+        Optional<UserCredential> userCredential = userCredentialRepository.findById(request.id());
+        if(userCredential.isEmpty()) throw new EntityNotFoundException("User not in database");
+        Optional<UserProfile> userProfile = userProfileRepository.findByUserCredentialId(request.id());
+        if(!request.firstName().equals(userProfile.get().getFirstName())){
+            userProfile.get().setFirstName(request.firstName());
+        }
+        if(!request.lastName().equals(userProfile.get().getLastName())){
+            userProfile.get().setLastName(request.lastName());
+        }
+        if(!request.email().equals(userCredential.get().getEmail())) {
+            userCredential.get().setEmail(request.email());
+        }
+        if(request.phone() != userProfile.get().getPhone()) {
+            userProfile.get().setPhone(request.phone());
+        }
+        if(!request.address().equals(userProfile.get().getAddress())) {
+            userProfile.get().setAddress(request.address());
+        }
+        if(!request.password().equals(userCredential.get().getPassword())) {
+            userCredential.get().setPassword(request.password());
+        }
+        if(!Objects.equals(request.creditScore(), userProfile.get().getCreditScore())) {
+            userProfile.get().setCreditScore(request.creditScore());
+        }
+        userCredentialRepository.save(userCredential.get());
+        userProfileRepository.save(userProfile.get());
     }
 
     @Override

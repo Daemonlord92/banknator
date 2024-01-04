@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/apiv1/users")
 public class UserController {
@@ -22,7 +24,18 @@ public class UserController {
             return ResponseEntity.of(userService.createUserInformation(request));
         } catch (ResponseStatusException e) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Error has occurred while creating user" ,e
+                    HttpStatus.BAD_REQUEST, e.getMessage()
+            );
+        }
+    }
+
+    @GetMapping("/getAllUser")
+    public ResponseEntity<List<User>> getAllUser() {
+        try {
+            return ResponseEntity.ok(userService.getAllUsers());
+        } catch (ResponseStatusException e ) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, e.getMessage()
             );
         }
     }
