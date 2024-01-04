@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Optional<User>> getUser(@RequestBody long id) {
+    public ResponseEntity<Optional<User>> getUser(@RequestParam long id) {
         try {
             return ResponseEntity.ok(userService.getUserById(id));
         } catch (ResponseStatusException e) {
@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @PutMapping("/disableUser")
-    public ResponseEntity<MessageResponse> disableUser(@RequestBody long id) {
+    public ResponseEntity<MessageResponse> disableUser(@RequestParam long id) {
         try {
             return ResponseEntity.ok(userService.disableUser(id));
         } catch (ResponseStatusException e) {

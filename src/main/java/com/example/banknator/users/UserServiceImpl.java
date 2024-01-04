@@ -87,6 +87,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserCredential> userCredential = userCredentialRepository.findById(id);
         if(userCredential.isEmpty()) throw new EntityNotFoundException("User not in database");
         userCredential.get().setDisabled(true);
+        userCredential.get().setDisabledAt(LocalDate.now());
         userCredentialRepository.save(userCredential.get());
         return new MessageResponse("User Disabled");
     }

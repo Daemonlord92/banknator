@@ -26,6 +26,7 @@ public class UserCredential implements UserDetails {
         this.email = email;
         this.password = password;
         this.isDisabled = false;
+        this.createdAt = LocalDate.now();
     }
 
     public UserCredential() {
