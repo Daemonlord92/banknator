@@ -9,12 +9,8 @@ import com.example.banknator.entity.CreditAccount;
 import com.example.banknator.entity.Transaction;
 import com.example.banknator.shared.MessageResponse;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.expression.AccessException;
-import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.AccountException;
-import javax.security.auth.login.AccountLockedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,6 +139,7 @@ public class AccountServiceImpl implements AccountService{
         if(!account.get().getActive()) throw new RuntimeException("Account is already disabled");
         account.get().setActive(false);
         account.get().setDisabledAt(LocalDate.now());
+        accountRepository.save(account.get());
         return new MessageResponse("Account Disabled");
     }
 
@@ -153,6 +150,7 @@ public class AccountServiceImpl implements AccountService{
         if(account.get().getActive()) throw new RuntimeException("Account is already active");
         account.get().setActive(true);
         account.get().setDisabledAt(null);
+        accountRepository.save(account.get());
         return new MessageResponse("Account Enabled");
     }
 }
