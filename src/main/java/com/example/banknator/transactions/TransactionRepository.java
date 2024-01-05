@@ -1,4 +1,4 @@
-package com.example.banknator.transactions.dto;
+package com.example.banknator.transactions;
 
 import com.example.banknator.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;

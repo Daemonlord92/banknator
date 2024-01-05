@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
+
 @Entity
 public class Account {
 
@@ -16,12 +18,15 @@ public class Account {
     private AccountType accountType = AccountType.CHECKING;
     private Double balance = 0.00;
     private Boolean isActive = true;
+    private LocalDate createdAt;
+    private LocalDate disabledAt;
 
-    public Account(Long userProfileId, AccountType accountType, Double balance, Boolean isActive) {
+    public Account(Long userProfileId, AccountType accountType) {
         this.userProfileId = userProfileId;
         this.accountType = accountType;
-        this.balance = balance;
-        this.isActive = isActive;
+        this.balance = 0.00;
+        this.isActive = true;
+        this.createdAt = LocalDate.now();
     }
 
     public Account() {
@@ -66,5 +71,21 @@ public class Account {
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getDisabledAt() {
+        return disabledAt;
+    }
+
+    public void setDisabledAt(LocalDate disabledAt) {
+        this.disabledAt = disabledAt;
     }
 }

@@ -15,12 +15,14 @@ public class Transaction {
     private Long id;
     private Long fromId;
     private Long toId;
+    private Double amount;
     private TransactionType transactionType;
     private TransactionStatus transactionStatus;
 
-    public Transaction(Long fromId, Long toId, TransactionType transactionType) {
+    public Transaction(Long fromId, Long toId, TransactionType transactionType, Double amount) {
         this.fromId = fromId;
         this.toId = toId;
+        this.amount = amount;
         this.transactionType = transactionType;
         this.transactionStatus = TransactionStatus.PENDING;
     }
@@ -67,5 +69,13 @@ public class Transaction {
 
     public void setTransactionStatus(TransactionStatus transactionStatus) {
         this.transactionStatus = transactionStatus;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }

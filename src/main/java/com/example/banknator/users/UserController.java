@@ -76,4 +76,15 @@ public class UserController {
             );
         }
     }
+
+    @PutMapping("/enableUser")
+    public ResponseEntity<MessageResponse> enableUser(@RequestParam long id) {
+        try {
+            return ResponseEntity.ok(userService.enableUser(id));
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, e.getMessage()
+            );
+        }
+    }
 }
