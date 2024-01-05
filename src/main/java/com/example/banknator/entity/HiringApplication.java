@@ -1,6 +1,7 @@
 package com.example.banknator.entity;
 
 import com.example.banknator.Enums.ApplicationStatus;
+import com.example.banknator.Enums.BankPosition;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,11 +14,13 @@ public class HiringApplication {
     private Long id;
     private Long userCredentialId;
     private Long bankId;
+    private BankPosition bankPosition;
     private ApplicationStatus applicationStatus;
 
-    public HiringApplication(Long userCredentialId, Long bankId) {
+    public HiringApplication(Long userCredentialId, BankPosition bankPosition , Long bankId) {
         this.userCredentialId = userCredentialId;
         this.bankId = bankId;
+        this.bankPosition = bankPosition;
         this.applicationStatus = ApplicationStatus.PENDING;
     }
 
@@ -55,5 +58,13 @@ public class HiringApplication {
 
     public void setApplicationStatus(ApplicationStatus applicationStatus) {
         this.applicationStatus = applicationStatus;
+    }
+
+    public BankPosition getBankPosition() {
+        return bankPosition;
+    }
+
+    public void setBankPosition(BankPosition bankPosition) {
+        this.bankPosition = bankPosition;
     }
 }

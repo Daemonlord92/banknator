@@ -9,8 +9,12 @@ import com.example.banknator.entity.CreditAccount;
 import com.example.banknator.entity.Transaction;
 import com.example.banknator.shared.MessageResponse;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.expression.AccessException;
+import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountException;
+import javax.security.auth.login.AccountLockedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,17 +115,21 @@ public class AccountServiceImpl implements AccountService{
     public MessageResponse updateBalance(Transaction transaction) {
         Optional<Account> fromAccount = accountRepository.findById(transaction.getFromId());
         Optional<Account> toAccount = accountRepository.findById(transaction.getToId());
-        if(fromAccount.isPresent()) {
+        if(fromAccount.isPresent() &&
+                toAccount.get().getActive() && fromAccount.get().getActive()) {
             fromAccount.get().setBalance(fromAccount.get().getBalance() - transaction.getAmount());
             toAccount.get().setBalance(toAccount.get().getBalance() + transaction.getAmount());
             accountRepository.saveAll(Arrays.asList(fromAccount.get(), toAccount.get()));
         }
         if(transaction.getTransactionType() == TransactionType.DEPOSIT ||
-                transaction.getTransactionType() == TransactionType.CHARGE) {
+                transaction.getTransactionType() == TransactionType.CHARGE &&
+                        toAccount.get().getActive()
+        ) {
             toAccount.get().setBalance(toAccount.get().getBalance() + transaction.getAmount());
             accountRepository.save(toAccount.get());
         }
-        if(transaction.getTransactionType() == TransactionType.MAKE_PAYMENT) {
+        if(transaction.getTransactionType() == TransactionType.MAKE_PAYMENT &&
+                toAccount.get().getActive()) {
             toAccount.get().setBalance(toAccount.get().getBalance() - transaction.getAmount());
             accountRepository.save(toAccount.get());
         }
@@ -132,6 +140,7 @@ public class AccountServiceImpl implements AccountService{
     public MessageResponse disableAccount(Long id) {
         Optional<Account> account = accountRepository.findById(id);
         if(account.isEmpty()) throw new EntityNotFoundException("Account not found");
+        if(!account.get().getActive()) throw new RuntimeException("Account is already disabled");
         account.get().setActive(false);
         account.get().setDisabledAt(LocalDate.now());
         return new MessageResponse("Account Disabled");
@@ -141,6 +150,7 @@ public class AccountServiceImpl implements AccountService{
     public MessageResponse enableAccount(Long id) {
         Optional<Account> account = accountRepository.findById(id);
         if(account.isEmpty()) throw new EntityNotFoundException("Account not found");
+        if(account.get().getActive()) throw new RuntimeException("Account is already active");
         account.get().setActive(true);
         account.get().setDisabledAt(null);
         return new MessageResponse("Account Enabled");
