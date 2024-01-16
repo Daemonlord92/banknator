@@ -23,15 +23,14 @@ public class Account {
     private UserProfile userProfile;
 
     public Account(UserProfile userProfile, AccountType accountType) {
+        this.userProfile = userProfile;
         this.accountType = accountType;
         this.balance = 0.00;
         this.isActive = true;
         this.createdAt = LocalDate.now();
     }
 
-    public Account() {
-
-    }
+    public Account() {}
 
     public Long getId() {
         return id;
