@@ -1,10 +1,9 @@
 package com.example.banknator.entity;
 
 import com.example.banknator.Enums.BankStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Bank {
@@ -15,6 +14,9 @@ public class Bank {
     private String name = "Horrorbank";
     private Double balance = 500000.00;
     private BankStatus bankStatus = BankStatus.UNDER_CONSTRUCTION;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<EmployeeProfile> employeeProfiles;
 
     public Bank(String name, Double balance) {
         this.name = name;
@@ -55,5 +57,13 @@ public class Bank {
 
     public void setBankStatus(BankStatus bankStatus) {
         this.bankStatus = bankStatus;
+    }
+
+    public List<EmployeeProfile> getEmployeeProfiles() {
+        return employeeProfiles;
+    }
+
+    public void setEmployeeProfiles(List<EmployeeProfile> employeeProfiles) {
+        this.employeeProfiles = employeeProfiles;
     }
 }

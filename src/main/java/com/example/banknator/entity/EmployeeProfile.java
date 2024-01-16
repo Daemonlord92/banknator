@@ -10,25 +10,28 @@ public class EmployeeProfile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private BankPosition position;
-    private Long bankId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private UserProfile userProfile;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Bank bank;
+
     public EmployeeProfile() {}
 
-    public EmployeeProfile(BankPosition position, Long bankId, UserProfile userProfile) {
+    public EmployeeProfile(BankPosition position, UserProfile userProfile, Bank bank) {
         this.position = position;
-        this.bankId = bankId;
         this.userProfile = userProfile;
+        this.bank = bank;
     }
 
-    public EmployeeProfile(Long id, BankPosition position, Long bankId, UserProfile userProfile) {
+    public EmployeeProfile(Long id, BankPosition position, UserProfile userProfile, Bank bank) {
         this.id = id;
         this.position = position;
-        this.bankId = bankId;
         this.userProfile = userProfile;
+        this.bank = bank;
     }
 
     public void setId(Long id) {
@@ -47,19 +50,19 @@ public class EmployeeProfile {
         this.position = position;
     }
 
-    public Long getBankId() {
-        return bankId;
-    }
-
-    public void setBankId(Long bankId) {
-        this.bankId = bankId;
-    }
-
     public UserProfile getUserProfile() {
         return userProfile;
     }
 
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 }

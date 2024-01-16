@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 public class UserCredential implements UserDetails {
 
     @Id

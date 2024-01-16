@@ -137,4 +137,36 @@ public class UserProfile {
     public void setUserCredential(UserCredential userCredential) {
         this.userCredential = userCredential;
     }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public EmployeeProfile getEmployeeProfile() {
+        return employeeProfile;
+    }
+
+    public void setEmployeeProfile(EmployeeProfile employeeProfile) {
+        this.employeeProfile = employeeProfile;
+    }
+
+    public List<LoanApplication> getLoanApplication() {
+        return loanApplication;
+    }
+
+    public void setLoanApplication(List<LoanApplication> loanApplication) {
+        this.loanApplication = loanApplication;
+    }
+
+    public List<HiringApplication> getHiringApplications() {
+        return hiringApplications;
+    }
+
+    public void setHiringApplications(List<HiringApplication> hiringApplications) {
+        this.hiringApplications = hiringApplications;
+    }
 }

@@ -8,6 +8,8 @@ import com.example.banknator.users.dto.UpdateUserInformation;
 import com.example.banknator.users.dto.User;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+    protected final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserCredentialRepository userCredentialRepository;
     private final UserProfileRepository userProfileRepository;
 
@@ -29,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUserInformation(PostNewUserInformation request) {
+        logger.info("UserServiceImpl:MJM:L35->Creating the UserCredential and UserProfile");
         if(userCredentialRepository.findByEmail(request.email()).isPresent()) throw new EntityExistsException("Email already inuse, Please log in.");
         UserCredential userCredential = new UserCredential(request.email(), request.password());
         userCredentialRepository.save(userCredential);
@@ -42,6 +46,7 @@ public class UserServiceImpl implements UserService {
                 LocalDate.parse(request.dateOfBirth()),
                 userCredential);
         userProfileRepository.save(userProfile);
+        logger.info("UserServiceImpl:MJM:L49->Completed and returning data in a User Record");
         return new User(
                 request.firstName(),
                 request.lastName(),
