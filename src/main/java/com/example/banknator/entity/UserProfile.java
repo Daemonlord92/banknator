@@ -1,11 +1,10 @@
 package com.example.banknator.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class UserProfile {
@@ -13,7 +12,6 @@ public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long userCredentialId;
     private String firstName;
     private String lastName;
     private String address;
@@ -21,38 +19,55 @@ public class UserProfile {
     private Integer creditScore;
     private LocalDate dateOfBirth;
 
-    public UserProfile(Long userCredentialId,
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private UserCredential userCredential;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Account> accounts;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private EmployeeProfile employeeProfile;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<LoanApplication> loanApplication;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<HiringApplication> hiringApplications;
+
+    public UserProfile(
                        String firstName,
                        String lastName,
                        String address,
                        Long phone,
                        Integer creditScore,
-                       LocalDate dateOfBirth) {
-        this.userCredentialId = userCredentialId;
+                       LocalDate dateOfBirth,
+                       UserCredential userCredential) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phone = phone;
         this.creditScore = creditScore;
         this.dateOfBirth = dateOfBirth;
+        this.userCredential = userCredential;
     }
 
     public UserProfile(Long id,
-                       Long userCredentialId,
                        String firstName,
                        String lastName,
                        String address,
                        Long phone,
                        Integer creditScore,
-                       LocalDate dateOfBirth) {
+                       LocalDate dateOfBirth,
+                       UserCredential userCredential) {
         this.id = id;
-        this.userCredentialId = userCredentialId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phone = phone;
         this.creditScore = creditScore;
         this.dateOfBirth = dateOfBirth;
+        this.userCredential = userCredential;
     }
 
     public UserProfile() {
@@ -65,14 +80,6 @@ public class UserProfile {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserCredentialId() {
-        return userCredentialId;
-    }
-
-    public void setUserCredentialId(Long userCredentialId) {
-        this.userCredentialId = userCredentialId;
     }
 
     public String getFirstName() {
@@ -121,5 +128,13 @@ public class UserProfile {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public UserCredential getUserCredential() {
+        return userCredential;
+    }
+
+    public void setUserCredential(UserCredential userCredential) {
+        this.userCredential = userCredential;
     }
 }

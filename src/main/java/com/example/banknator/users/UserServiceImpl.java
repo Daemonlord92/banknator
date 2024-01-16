@@ -28,28 +28,28 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Optional<User> createUserInformation(PostNewUserInformation request) {
+    public User createUserInformation(PostNewUserInformation request) {
         if(userCredentialRepository.findByEmail(request.email()).isPresent()) throw new EntityExistsException("Email already inuse, Please log in.");
         UserCredential userCredential = new UserCredential(request.email(), request.password());
         userCredentialRepository.save(userCredential);
         userCredential = getUserCredentialByEmail(request.email()).get();
         UserProfile userProfile = new UserProfile(
-                userCredential.getId(),
                 request.firstName(),
                 request.lastName(),
                 request.address(),
                 request.phone(),
                 request.creditScore(),
-                LocalDate.parse(request.dateOfBirth()));
+                LocalDate.parse(request.dateOfBirth()),
+                userCredential);
         userProfileRepository.save(userProfile);
-        return Optional.of(new User(
+        return new User(
                 request.firstName(),
                 request.lastName(),
                 request.address(),
                 request.phone(),
                 request.email(),
                 request.creditScore(),
-                LocalDate.parse(request.dateOfBirth())));
+                LocalDate.parse(request.dateOfBirth()));
     }
 
     @Override
@@ -123,11 +123,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(Long id) {
+    public User getUserById(Long id) {
         Optional<UserCredential> userCredential = userCredentialRepository.findById(id);
         if (userCredential.isEmpty()) throw new EntityNotFoundException("User not found");
         Optional<UserProfile> userProfile = userProfileRepository.findByUserCredentialId(id);
-        Optional<User> user = Optional.of(new User(
+        User user = new User(
                 userProfile.get().getFirstName(),
                 userProfile.get().getLastName(),
                 userProfile.get().getAddress(),
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
                 userCredential.get().getEmail(),
                 userProfile.get().getCreditScore(),
                 userProfile.get().getDateOfBirth()
-        ));
+        );
         return user;
     }
 

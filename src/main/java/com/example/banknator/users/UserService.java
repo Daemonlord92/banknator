@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<User> createUserInformation(PostNewUserInformation request);
+    User createUserInformation(PostNewUserInformation request);
     void updateUserInformation(UpdateUserInformation request);
     MessageResponse disableUser(Long id);
     MessageResponse enableUser(Long id);
     List<User> getAllUsers();
-    Optional<User> getUserById(Long id);
+    User getUserById(Long id);
 }

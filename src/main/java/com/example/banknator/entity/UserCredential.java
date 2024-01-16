@@ -1,9 +1,6 @@
 package com.example.banknator.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,6 +18,9 @@ public class UserCredential implements UserDetails {
     private Boolean isDisabled;
     private LocalDate createdAt;
     private LocalDate disabledAt;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private UserProfile userProfile;
 
     public UserCredential(String email, String password) {
         this.email = email;

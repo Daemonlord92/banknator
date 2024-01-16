@@ -8,6 +8,7 @@ import com.example.banknator.entity.Account;
 import com.example.banknator.entity.CreditAccount;
 import com.example.banknator.entity.Transaction;
 import com.example.banknator.shared.MessageResponse;
+import com.example.banknator.users.UserProfileRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,11 @@ import java.util.Optional;
 @Service
 public class AccountServiceImpl implements AccountService{
     protected final AccountRepository accountRepository;
+    protected final UserProfileRepository userProfileRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, UserProfileRepository userProfileRepository) {
         this.accountRepository = accountRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     @Override
@@ -30,20 +33,20 @@ public class AccountServiceImpl implements AccountService{
         if(request.accountType() == AccountType.CREDIT) {
             CreditAccount creditAccount = new CreditAccount();
             creditAccount.setAccountType(request.accountType());
-            creditAccount.setUserProfileId(request.userProfileId());
+            creditAccount.setUserProfile(userProfileRepository.findById(request.userProfileId()).orElseThrow());
             accountRepository.save(creditAccount);
             return new MessageResponse("Credit Account Created");
         } else if (request.accountType() == AccountType.LOAN) {
             CreditAccount creditAccount = new CreditAccount();
             creditAccount.setAccountType(request.accountType());
-            creditAccount.setUserProfileId(request.userProfileId());
+            creditAccount.setUserProfile(userProfileRepository.findById(request.userProfileId()).orElseThrow());
             creditAccount.setBalance(request.balance());
             creditAccount.setMinPayment(request.balance() / 24);
             creditAccount.setInterestRate(2.5);
             accountRepository.save(creditAccount);
             return new MessageResponse("Loan Account Created");
         } else {
-            Account account = new Account(request.userProfileId(), request.accountType());
+            Account account = new Account(userProfileRepository.findById(request.userProfileId()).orElseThrow(), request.accountType());
             accountRepository.save(account);
             return new MessageResponse("Account Created");
         }
@@ -55,7 +58,7 @@ public class AccountServiceImpl implements AccountService{
         List<Account> accounts = accountRepository.findAll();
         List<AccountInformation> accountInformations = new ArrayList<>();
         for (Account account : accounts) {
-            if(account.getUserProfileId() == id) {
+            if(account.getUserProfile().getId() == id) {
                 if(account.getAccountType() == AccountType.CREDIT || account.getAccountType() == AccountType.LOAN) {
                     CreditAccount account1 = (CreditAccount) account;
                     accountInformations.add(

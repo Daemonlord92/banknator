@@ -9,8 +9,8 @@ public class CreditAccount extends Account{
     private Double minPayment;
     private Double interestRate;
 
-    public CreditAccount(Long userCredentialId, AccountType accountType) {
-        super(userCredentialId, accountType);
+    public CreditAccount(UserProfile userProfile, AccountType accountType) {
+        super(userProfile, accountType);
         this.creditLimit = 1500.00;
         this.minPayment = minPayment = 0.00;
         this.interestRate = interestRate = 0.09;

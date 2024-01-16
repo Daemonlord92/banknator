@@ -1,33 +1,34 @@
 package com.example.banknator.entity;
 
 import com.example.banknator.Enums.BankPosition;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 @Entity
 public class EmployeeProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long userProfileId;
     private BankPosition position;
     private Long bankId;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private UserProfile userProfile;
+
     public EmployeeProfile() {}
 
-    public EmployeeProfile(Long userProfileId, BankPosition position, Long bankId) {
-        this.userProfileId = userProfileId;
+    public EmployeeProfile(BankPosition position, Long bankId, UserProfile userProfile) {
         this.position = position;
         this.bankId = bankId;
+        this.userProfile = userProfile;
     }
 
-    public EmployeeProfile(Long id, Long userProfileId, BankPosition position, Long bankId) {
+    public EmployeeProfile(Long id, BankPosition position, Long bankId, UserProfile userProfile) {
         this.id = id;
-        this.userProfileId = userProfileId;
         this.position = position;
         this.bankId = bankId;
+        this.userProfile = userProfile;
     }
 
     public void setId(Long id) {
@@ -36,14 +37,6 @@ public class EmployeeProfile {
 
     public Long getId() {
         return id;
-    }
-
-    public Long getUserProfileId() {
-        return userProfileId;
-    }
-
-    public void setUserProfileId(Long userProfileId) {
-        this.userProfileId = userProfileId;
     }
 
     public BankPosition getPosition() {
@@ -60,5 +53,13 @@ public class EmployeeProfile {
 
     public void setBankId(Long bankId) {
         this.bankId = bankId;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }

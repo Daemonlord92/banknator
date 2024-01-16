@@ -24,7 +24,7 @@ public class UserController {
     @PostMapping("/newUser")
     public ResponseEntity<User> postNewUser(@RequestBody PostNewUserInformation request){
         try{
-            return ResponseEntity.of(userService.createUserInformation(request));
+            return new ResponseEntity<>(userService.createUserInformation(request), HttpStatus.CREATED);
         } catch (ResponseStatusException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage()
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Optional<User>> getUser(@RequestParam long id) {
+    public ResponseEntity<User> getUser(@RequestParam long id) {
         try {
             return ResponseEntity.ok(userService.getUserById(id));
         } catch (ResponseStatusException e) {
@@ -58,7 +58,7 @@ public class UserController {
     public ResponseEntity updateUser(@RequestBody UpdateUserInformation request) {
         try {
             userService.updateUserInformation(request);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (ResponseStatusException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage()

@@ -1,10 +1,8 @@
 package com.example.banknator.entity;
 
 import com.example.banknator.Enums.AccountType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -14,15 +12,17 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long userProfileId;
     private AccountType accountType = AccountType.CHECKING;
     private Double balance = 0.00;
     private Boolean isActive = true;
     private LocalDate createdAt;
     private LocalDate disabledAt;
 
-    public Account(Long userProfileId, AccountType accountType) {
-        this.userProfileId = userProfileId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private UserProfile userProfile;
+
+    public Account(UserProfile userProfile, AccountType accountType) {
         this.accountType = accountType;
         this.balance = 0.00;
         this.isActive = true;
@@ -39,14 +39,6 @@ public class Account {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserProfileId() {
-        return userProfileId;
-    }
-
-    public void setUserProfileId(Long userProfileId) {
-        this.userProfileId = userProfileId;
     }
 
     public AccountType getAccountType() {
@@ -87,5 +79,13 @@ public class Account {
 
     public void setDisabledAt(LocalDate disabledAt) {
         this.disabledAt = disabledAt;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }

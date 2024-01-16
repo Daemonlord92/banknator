@@ -19,7 +19,6 @@ public class Bank {
     public Bank(String name, Double balance) {
         this.name = name;
         this.balance = balance;
-        this.bankStatus = BankStatus.UNDER_CONSTRUCTION;
     }
 
     public Bank() {

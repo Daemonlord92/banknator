@@ -2,26 +2,27 @@ package com.example.banknator.entity;
 
 import com.example.banknator.Enums.ApplicationStatus;
 import com.example.banknator.Enums.BankPosition;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 @Entity
 public class HiringApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long userCredentialId;
     private Long bankId;
     private BankPosition bankPosition;
     private ApplicationStatus applicationStatus;
 
-    public HiringApplication(Long userCredentialId, BankPosition bankPosition , Long bankId) {
-        this.userCredentialId = userCredentialId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private UserProfile userProfile;
+
+    public HiringApplication(BankPosition bankPosition , Long bankId, UserProfile userProfile) {
         this.bankId = bankId;
         this.bankPosition = bankPosition;
         this.applicationStatus = ApplicationStatus.PENDING;
+        this.userProfile = userProfile;
     }
 
     public HiringApplication() {
@@ -34,14 +35,6 @@ public class HiringApplication {
 
     public Long getId() {
         return id;
-    }
-
-    public Long getUserCredentialId() {
-        return userCredentialId;
-    }
-
-    public void setUserCredentialId(Long userCredentialId) {
-        this.userCredentialId = userCredentialId;
     }
 
     public Long getBankId() {
