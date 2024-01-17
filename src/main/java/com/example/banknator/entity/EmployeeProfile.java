@@ -10,6 +10,7 @@ public class EmployeeProfile {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private BankPosition position;
+    private Double salary;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -21,15 +22,17 @@ public class EmployeeProfile {
 
     public EmployeeProfile() {}
 
-    public EmployeeProfile(BankPosition position, UserProfile userProfile, Bank bank) {
+    public EmployeeProfile(BankPosition position, Double salary, UserProfile userProfile, Bank bank) {
         this.position = position;
+        this.salary = salary;
         this.userProfile = userProfile;
         this.bank = bank;
     }
 
-    public EmployeeProfile(Long id, BankPosition position, UserProfile userProfile, Bank bank) {
+    public EmployeeProfile(Long id, BankPosition position, Double salary, UserProfile userProfile, Bank bank) {
         this.id = id;
         this.position = position;
+        this.salary = salary;
         this.userProfile = userProfile;
         this.bank = bank;
     }
@@ -48,6 +51,14 @@ public class EmployeeProfile {
 
     public void setPosition(BankPosition position) {
         this.position = position;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 
     public UserProfile getUserProfile() {

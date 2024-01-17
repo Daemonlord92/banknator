@@ -4,6 +4,7 @@ import com.example.banknator.Enums.AccountType;
 import com.example.banknator.Enums.TransactionType;
 import com.example.banknator.accounts.dto.AccountInformation;
 import com.example.banknator.accounts.dto.PostNewAccountInformation;
+import com.example.banknator.accounts.exception.ResourceDisabledException;
 import com.example.banknator.entity.Account;
 import com.example.banknator.entity.CreditAccount;
 import com.example.banknator.entity.Transaction;
@@ -59,7 +60,7 @@ public class AccountServiceImpl implements AccountService{
         List<AccountInformation> accountInformations = new ArrayList<>();
         for (Account account : accounts) {
             if(account.getUserProfile().getId() == id) {
-                if(account.getAccountType() == AccountType.CREDIT || account.getAccountType() == AccountType.LOAN) {
+                if(account.getAccountType() == AccountType.CREDIT || account.getAccountType() == AccountType.LOAN && account.getActive()) {
                     CreditAccount account1 = (CreditAccount) account;
                     accountInformations.add(
                             new AccountInformation(
@@ -70,7 +71,7 @@ public class AccountServiceImpl implements AccountService{
                                     account1.getInterestRate()
                             ));
                 }
-                else {
+                else if (account.getActive()) {
                     accountInformations.add(
                             new AccountInformation(
                                     account.getId(),
@@ -90,15 +91,14 @@ public class AccountServiceImpl implements AccountService{
     public AccountInformation getAccountById(long id) {
         Optional<Account> account = accountRepository.findById(id);
         if(account.isEmpty()) throw new EntityNotFoundException("Account not found");
-        if(account.get().getAccountType() == AccountType.CREDIT || account.get().getAccountType() == AccountType.LOAN) {
+        if(account.get().getAccountType() == AccountType.CREDIT || account.get().getAccountType() == AccountType.LOAN && account.get().getActive()) {
             CreditAccount creditAccount = (CreditAccount) account.get();
-            AccountInformation accountInformation = new AccountInformation(creditAccount.getId(),
+            return new AccountInformation(creditAccount.getId(),
                     creditAccount.getAccountType(),
                     creditAccount.getBalance(),
                     creditAccount.getMinPayment(),
                     creditAccount.getInterestRate());
-            return accountInformation;
-        } else {
+        } else if (account.get().getActive()) {
             AccountInformation accountInformation = new AccountInformation(
                     account.get().getId(),
                     account.get().getAccountType(),
@@ -107,6 +107,8 @@ public class AccountServiceImpl implements AccountService{
                     0.0
             );
             return accountInformation;
+        } else {
+            throw new ResourceDisabledException("Account with id " + id + " is disabled");
         }
     }
 

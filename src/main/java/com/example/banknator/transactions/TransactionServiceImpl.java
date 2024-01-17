@@ -88,6 +88,14 @@ public class TransactionServiceImpl implements TransactionService{
                 throw new InsufficientAccountBalanceException("Account " + transaction.getFromId()+ " has insufficient balance");
             }
         }
+        if(toAccount.balance() <= transaction.getAmount() && transaction.getTransactionType() == TransactionType.MAKE_PAYMENT) {
+            transaction.setAmount(toAccount.balance());
+            transaction.setTransactionStatus(TransactionStatus.APPROVED);
+            accountService.updateBalance(transaction);
+            accountService.disableAccount(toAccount.id());
+            transactionRepository.save(transaction);
+            return;
+        }
         transaction.setTransactionStatus(TransactionStatus.APPROVED);
         accountService.updateBalance(transaction);
         transactionRepository.save(transaction);

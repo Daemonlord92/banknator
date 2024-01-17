@@ -12,15 +12,17 @@ public class HiringApplication {
     private Long id;
     private Long bankId;
     private BankPosition bankPosition;
+    private Double requestedSalary;
     private ApplicationStatus applicationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private UserProfile userProfile;
 
-    public HiringApplication(BankPosition bankPosition , Long bankId, UserProfile userProfile) {
+    public HiringApplication(BankPosition bankPosition, Double requestedSalary, Long bankId, UserProfile userProfile) {
         this.bankId = bankId;
         this.bankPosition = bankPosition;
+        this.requestedSalary = requestedSalary;
         this.applicationStatus = ApplicationStatus.PENDING;
         this.userProfile = userProfile;
     }
@@ -59,5 +61,21 @@ public class HiringApplication {
 
     public void setBankPosition(BankPosition bankPosition) {
         this.bankPosition = bankPosition;
+    }
+
+    public Double getRequestedSalary() {
+        return requestedSalary;
+    }
+
+    public void setRequestedSalary(Double requestedSalary) {
+        this.requestedSalary = requestedSalary;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }
