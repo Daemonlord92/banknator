@@ -1,5 +1,6 @@
 package com.example.banknator.users;
 
+import com.example.banknator.entity.UserCredential;
 import com.example.banknator.shared.MessageResponse;
 import com.example.banknator.users.dto.PostNewUserInformation;
 import com.example.banknator.users.dto.UpdateUserInformation;
@@ -15,4 +16,5 @@ public interface UserService {
     MessageResponse enableUser(Long id);
     List<User> getAllUsers();
     User getUserById(Long id);
+    Optional<UserCredential> getUserCredentialByEmail(String email);
 }

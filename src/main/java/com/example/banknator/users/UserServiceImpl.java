@@ -7,11 +7,11 @@ import com.example.banknator.users.dto.PostNewUserInformation;
 import com.example.banknator.users.dto.UpdateUserInformation;
 import com.example.banknator.users.dto.User;
 import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,10 +26,12 @@ public class UserServiceImpl implements UserService {
     protected final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserCredentialRepository userCredentialRepository;
     private final UserProfileRepository userProfileRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserCredentialRepository userCredentialRepository, UserProfileRepository userProfileRepository) {
+    public UserServiceImpl(UserCredentialRepository userCredentialRepository, UserProfileRepository userProfileRepository, PasswordEncoder passwordEncoder) {
         this.userCredentialRepository = userCredentialRepository;
         this.userProfileRepository = userProfileRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
     public User createUserInformation(PostNewUserInformation request) {
         logger.info("UserServiceImpl:MJM:L35->Creating the UserCredential and UserProfile");
         if(userCredentialRepository.findByEmail(request.email()).isPresent()) throw new EntityExistsException("Email already inuse, Please log in.");
-        UserCredential userCredential = new UserCredential(request.email(), request.password());
+        UserCredential userCredential = new UserCredential(request.email(), passwordEncoder.encode(request.password()));
         userCredentialRepository.save(userCredential);
         userCredential = getUserCredentialByEmail(request.email()).get();
         UserProfile userProfile = new UserProfile(
@@ -82,7 +84,7 @@ public class UserServiceImpl implements UserService {
             userProfile.get().setAddress(request.address());
         }
         if(!request.password().equals(userCredential.get().getPassword())) {
-            userCredential.get().setPassword(request.password());
+            userCredential.get().setPassword(passwordEncoder.encode(request.password()));
         }
         if(!Objects.equals(request.creditScore(), userProfile.get().getCreditScore())) {
             userProfile.get().setCreditScore(request.creditScore());
@@ -148,7 +150,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private Optional<UserCredential> getUserCredentialByEmail(String email) {
+    public Optional<UserCredential> getUserCredentialByEmail(String email) {
         return userCredentialRepository.findByEmail(email);
     }
 
