@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class HiringApplicationServiceImpl implements HiringApplicationService{
-    protected final Logger logger = LoggerFactory.getLogger(HiringApplicationServiceImpl.class);
+public class HiringApplicationImpl implements HiringApplicationService{
+    protected final Logger logger = LoggerFactory.getLogger(HiringApplicationImpl.class);
     protected final HiringApplicationRepository hiringApplicationRepository;
     protected final UserProfileRepository userProfileRepository;
     protected final BankRepository bankRepository;
     protected final EmployeeProfileService employeeProfileService;
 
-    public HiringApplicationServiceImpl(HiringApplicationRepository hiringApplicationRepository, UserProfileRepository userProfileRepository, BankRepository bankRepository, EmployeeProfileService employeeProfileService) {
+    public HiringApplicationImpl(HiringApplicationRepository hiringApplicationRepository, UserProfileRepository userProfileRepository, BankRepository bankRepository, EmployeeProfileService employeeProfileService) {
         this.hiringApplicationRepository = hiringApplicationRepository;
         this.userProfileRepository = userProfileRepository;
         this.bankRepository = bankRepository;

@@ -7,12 +7,15 @@ import com.example.banknator.users.dto.PostNewUserInformation;
 import com.example.banknator.users.dto.UpdateUserInformation;
 import com.example.banknator.users.dto.User;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional(rollbackOn = {DateTimeParseException.class, RuntimeException.class})
     public User createUserInformation(PostNewUserInformation request) {
         logger.info("UserServiceImpl:MJM:L35->Creating the UserCredential and UserProfile");
         if(userCredentialRepository.findByEmail(request.email()).isPresent()) throw new EntityExistsException("Email already inuse, Please log in.");
