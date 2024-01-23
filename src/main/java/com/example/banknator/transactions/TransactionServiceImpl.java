@@ -79,7 +79,7 @@ public class TransactionServiceImpl implements TransactionService{
             AccountInformation fromAccount = accountService.getAccountById(transaction.getFromId());
             if(fromAccount.balance() >= transaction.getAmount()){
                 transaction.setTransactionStatus(TransactionStatus.APPROVED);
-                updateTransaction(transaction);
+                accountService.updateBalance(transaction);
                 transactionRepository.save(transaction);
                 return;
             } else {

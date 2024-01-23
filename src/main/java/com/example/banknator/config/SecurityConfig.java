@@ -12,6 +12,8 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.security.SecureRandom;
 
@@ -30,19 +32,40 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(htp -> htp
-                        .requestMatchers("/apiv1/auth/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
-                .sessionManagement(ses -> ses
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        /*if(System.getenv().get("OS").equals("Windows_NT")) {
+            http
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .cors(cor -> cor.configurationSource(corsFilter()))
+                    .authorizeHttpRequests(htp -> htp
+                            .anyRequest().permitAll());
+        } else {*/
+            http
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .cors(cor -> cor.configurationSource(corsFilter()))
+                    .authorizeHttpRequests(htp -> htp
+                            .requestMatchers("/apiv1/auth/**")
+                            .permitAll()
+                            .anyRequest()
+                            .authenticated())
+                    .sessionManagement(ses -> ses
+                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .authenticationProvider(authenticationProvider)
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
+
+    @Bean
+    public UrlBasedCorsConfigurationSource corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(false);
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("http://127.0.0.1:5173");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
 }

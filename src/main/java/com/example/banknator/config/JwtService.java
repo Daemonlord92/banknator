@@ -56,6 +56,7 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("firstName", user1.getFirstName());
         claims.put("role", user.get().getRole());
+        claims.put("userProfileId", user1.getUserId());
         return generateToken(claims, userDetails);
     }
 

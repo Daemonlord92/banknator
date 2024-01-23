@@ -3,6 +3,7 @@ package com.example.banknator.users.dto;
 import java.time.LocalDate;
 
 public class User {
+    private Long userId;
     private String firstName;
     private String lastName;
     private String address;
@@ -11,13 +12,15 @@ public class User {
     private Integer creditScore;
     private LocalDate dateOfBirth;
 
-    public User(String firstName,
+    public User(Long id,
+                String firstName,
                 String lastName,
                 String address,
                 Long phone,
                 String email,
                 Integer creditScore,
                 LocalDate dateOfBirth) {
+        this.userId = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -25,6 +28,14 @@ public class User {
         this.email = email;
         this.creditScore = creditScore;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -81,5 +92,19 @@ public class User {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                ", email='" + email + '\'' +
+                ", creditScore=" + creditScore +
+                ", dateOfBirth=" + dateOfBirth +
+                '}';
     }
 }

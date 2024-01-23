@@ -51,9 +51,10 @@ public class UserServiceImpl implements UserService {
                 request.creditScore(),
                 LocalDate.parse(request.dateOfBirth()),
                 userCredential);
-        userProfileRepository.save(userProfile);
+        userProfile = userProfileRepository.save(userProfile);
         logger.info("UserServiceImpl:MJM:L49->Completed and returning data in a User Record");
         return new User(
+                userProfile.getId(),
                 request.firstName(),
                 request.lastName(),
                 request.address(),
@@ -121,6 +122,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < userCredentials.size(); i++) {
             users.add(new User(
+                    userProfiles.get(i).getId(),
                     userProfiles.get(i).getFirstName(),
                     userProfiles.get(i).getLastName(),
                     userProfiles.get(i).getAddress(),
@@ -139,6 +141,7 @@ public class UserServiceImpl implements UserService {
         if (userCredential.isEmpty()) throw new EntityNotFoundException("User not found");
         Optional<UserProfile> userProfile = userProfileRepository.findByUserCredentialId(id);
         User user = new User(
+                userProfile.get().getId(),
                 userProfile.get().getFirstName(),
                 userProfile.get().getLastName(),
                 userProfile.get().getAddress(),

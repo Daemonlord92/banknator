@@ -35,6 +35,9 @@ public class AccountServiceImpl implements AccountService{
             CreditAccount creditAccount = new CreditAccount();
             creditAccount.setAccountType(request.accountType());
             creditAccount.setUserProfile(userProfileRepository.findById(request.userProfileId()).orElseThrow());
+            creditAccount.setBalance(request.balance());
+            creditAccount.setCreatedAt(LocalDate.now());
+            creditAccount.setCreditLimit(1500.00);
             accountRepository.save(creditAccount);
             return new MessageResponse("Credit Account Created");
         } else if (request.accountType() == AccountType.LOAN) {
@@ -44,6 +47,7 @@ public class AccountServiceImpl implements AccountService{
             creditAccount.setBalance(request.balance());
             creditAccount.setMinPayment(request.balance() / 24);
             creditAccount.setInterestRate(2.5);
+            creditAccount.setCreatedAt(LocalDate.now());
             accountRepository.save(creditAccount);
             return new MessageResponse("Loan Account Created");
         } else {
