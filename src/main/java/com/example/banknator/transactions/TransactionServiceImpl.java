@@ -66,7 +66,8 @@ public class TransactionServiceImpl implements TransactionService{
                     transaction.getToId(),
                     transaction.getAmount(),
                     transaction.getTransactionType(),
-                    transaction.getTransactionStatus()
+                    transaction.getTransactionStatus(),
+                    transaction.getCreatedAt()
             );
             transactionInformations.add(transactionInformation);
         }

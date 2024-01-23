@@ -50,6 +50,7 @@ public class BanknatorApplication implements CommandLineRunner {
         accountService.createAccount(new PostNewAccountInformation(3, AccountType.CREDIT, 500.00));
         transactionService.createTransaction(new PostNewTransaction(0, 1, 5348.96, TransactionType.DEPOSIT));
         transactionService.createTransaction(new PostNewTransaction(0, 2, 15150.00, TransactionType.DEPOSIT));
+        Thread.sleep(60 * 1000);
         transactionService.createTransaction(new PostNewTransaction(1, 2, 50.25, TransactionType.WITHDRAW));
 
     }

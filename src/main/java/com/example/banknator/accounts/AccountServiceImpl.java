@@ -123,7 +123,7 @@ public class AccountServiceImpl implements AccountService{
         if(fromAccount.isPresent() &&
                 toAccount.get().getActive() && fromAccount.get().getActive()) {
             fromAccount.get().setBalance(fromAccount.get().getBalance() - transaction.getAmount());
-            toAccount.get().setBalance(toAccount.get().getBalance() + transaction.getAmount());
+            toAccount.get().setBalance((toAccount.get().getBalance() + transaction.getAmount()));
             accountRepository.saveAll(Arrays.asList(fromAccount.get(), toAccount.get()));
         }
         if(transaction.getTransactionType() == TransactionType.DEPOSIT ||

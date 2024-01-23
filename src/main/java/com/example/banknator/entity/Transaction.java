@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Transaction {
 
@@ -18,6 +20,7 @@ public class Transaction {
     private Double amount;
     private TransactionType transactionType;
     private TransactionStatus transactionStatus;
+    private LocalDateTime createdAt;
 
     public Transaction(Long fromId, Long toId, TransactionType transactionType, Double amount) {
         this.fromId = fromId;
@@ -25,6 +28,7 @@ public class Transaction {
         this.amount = amount;
         this.transactionType = transactionType;
         this.transactionStatus = TransactionStatus.PENDING;
+        this.createdAt = LocalDateTime.now();
     }
 
     public Transaction() {
@@ -78,4 +82,9 @@ public class Transaction {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
 }
