@@ -44,12 +44,24 @@ public class BanknatorApplication implements CommandLineRunner {
                 "456 Oak St, Townsville", 9876543210L, 800, "1985-05-15"));
         logger.info(userService.createUserInformation(new PostNewUserInformation("Matthew", "Martin", "admin@horrorbank.com", "Gudmord92!",
                 "106 Mace St", 5036803865L, 517, "1992-07-21")).toString());
+        accountService.createAccount(new PostNewAccountInformation(1, AccountType.CHECKING, 0.0));
+        accountService.createAccount(new PostNewAccountInformation(1, AccountType.SAVING, 0.0));
+        accountService.createAccount(new PostNewAccountInformation(2, AccountType.CHECKING, 0.0));
+        accountService.createAccount(new PostNewAccountInformation(2, AccountType.SAVING, 0.0));
         accountService.createAccount(new PostNewAccountInformation(3, AccountType.CHECKING, 0.0));
         accountService.createAccount(new PostNewAccountInformation(3, AccountType.SAVING, 0.0));
         accountService.createAccount(new PostNewAccountInformation(3, AccountType.LOAN, 1500.00));
         accountService.createAccount(new PostNewAccountInformation(3, AccountType.CREDIT, 500.00));
         transactionService.createTransaction(new PostNewTransaction(0, 1, 5348.96, TransactionType.DEPOSIT));
         transactionService.createTransaction(new PostNewTransaction(0, 2, 15150.00, TransactionType.DEPOSIT));
+        transactionService.createTransaction(new PostNewTransaction(0, 3, 5348.96, TransactionType.DEPOSIT));
+        transactionService.createTransaction(new PostNewTransaction(0, 4, 15150.00, TransactionType.DEPOSIT));
+        transactionService.createTransaction(new PostNewTransaction(0, 5, 5348.96, TransactionType.DEPOSIT));
+        transactionService.createTransaction(new PostNewTransaction(0, 6, 15150.00, TransactionType.DEPOSIT));
+        transactionService.createTransaction(new PostNewTransaction(0, 5, 5348.96, TransactionType.DEPOSIT));
+        transactionService.createTransaction(new PostNewTransaction(0, 5, 15150.00, TransactionType.DEPOSIT));
+        transactionService.createTransaction(new PostNewTransaction(0, 5, 5348.96, TransactionType.DEPOSIT));
+        transactionService.createTransaction(new PostNewTransaction(0, 5, 15150.00, TransactionType.DEPOSIT));
         Thread.sleep(60 * 1000);
         transactionService.createTransaction(new PostNewTransaction(1, 2, 50.25, TransactionType.WITHDRAW));
 

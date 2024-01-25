@@ -7,7 +7,8 @@ public record AccountInformation(
         AccountType accountType,
         Double balance,
         Double minPay,
-        Double interestRate
+        Double interestRate,
+        Boolean isDisabled
 ) {
 
 }

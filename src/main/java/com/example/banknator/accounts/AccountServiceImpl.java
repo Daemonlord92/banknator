@@ -72,7 +72,8 @@ public class AccountServiceImpl implements AccountService{
                                     account.getAccountType(),
                                     account.getBalance(),
                                     account1.getMinPayment(),
-                                    account1.getInterestRate()
+                                    account1.getInterestRate(),
+                                    account1.getActive()
                             ));
                 }
                 else if (account.getActive()) {
@@ -82,7 +83,8 @@ public class AccountServiceImpl implements AccountService{
                                     account.getAccountType(),
                                     account.getBalance(),
                                     0.0,
-                                    0.0
+                                    0.0,
+                                    account.getActive()
                             )
                     );
                 }
@@ -101,14 +103,16 @@ public class AccountServiceImpl implements AccountService{
                     creditAccount.getAccountType(),
                     creditAccount.getBalance(),
                     creditAccount.getMinPayment(),
-                    creditAccount.getInterestRate());
+                    creditAccount.getInterestRate(),
+                    creditAccount.getActive());
         } else if (account.get().getActive()) {
             AccountInformation accountInformation = new AccountInformation(
                     account.get().getId(),
                     account.get().getAccountType(),
                     account.get().getBalance(),
                     0.0,
-                    0.0
+                    0.0,
+                    account.get().getActive()
             );
             return accountInformation;
         } else {

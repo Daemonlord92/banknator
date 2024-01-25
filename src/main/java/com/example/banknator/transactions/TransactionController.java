@@ -20,7 +20,7 @@ public class TransactionController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<MessageResponse> postNewTransaction(PostNewTransaction request) {
+    public ResponseEntity<MessageResponse> postNewTransaction(@RequestBody PostNewTransaction request) {
         try {
             return ResponseEntity.ok(transactionService.createTransaction(request));
         } catch (ResponseStatusException e) {
