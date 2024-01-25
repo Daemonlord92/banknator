@@ -69,25 +69,25 @@ public class UserServiceImpl implements UserService {
         Optional<UserCredential> userCredential = userCredentialRepository.findById(request.id());
         if(userCredential.isEmpty()) throw new EntityNotFoundException("User not in database");
         Optional<UserProfile> userProfile = userProfileRepository.findByUserCredentialId(request.id());
-        if(!request.firstName().equals(userProfile.get().getFirstName())){
+        if(!request.firstName().equals(userProfile.get().getFirstName()) && !request.firstName().isEmpty()){
             userProfile.get().setFirstName(request.firstName());
         }
-        if(!request.lastName().equals(userProfile.get().getLastName())){
+        if(!request.lastName().equals(userProfile.get().getLastName()) && !request.lastName().isEmpty()){
             userProfile.get().setLastName(request.lastName());
         }
-        if(!request.email().equals(userCredential.get().getEmail())) {
+        if(!request.email().equals(userCredential.get().getEmail()) && !request.email().isEmpty()) {
             userCredential.get().setEmail(request.email());
         }
         if(request.phone() != userProfile.get().getPhone()) {
             userProfile.get().setPhone(request.phone());
         }
-        if(!request.address().equals(userProfile.get().getAddress())) {
+        if(!request.address().equals(userProfile.get().getAddress()) && !request.address().isEmpty()) {
             userProfile.get().setAddress(request.address());
         }
-        if(!request.password().equals(userCredential.get().getPassword())) {
+        if(!request.password().equals(userCredential.get().getPassword()) && !request.password().isEmpty()) {
             userCredential.get().setPassword(passwordEncoder.encode(request.password()));
         }
-        if(!Objects.equals(request.creditScore(), userProfile.get().getCreditScore())) {
+        if(!Objects.equals(request.creditScore(), userProfile.get().getCreditScore()) && request.creditScore() >= 150 && request.creditScore() <= 800) {
             userProfile.get().setCreditScore(request.creditScore());
         }
         userCredentialRepository.save(userCredential.get());
