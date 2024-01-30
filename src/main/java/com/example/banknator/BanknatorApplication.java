@@ -1,9 +1,17 @@
 package com.example.banknator;
 
 import com.example.banknator.Enums.AccountType;
+import com.example.banknator.Enums.ApplicationStatus;
+import com.example.banknator.Enums.BankPosition;
 import com.example.banknator.Enums.TransactionType;
 import com.example.banknator.accounts.AccountService;
 import com.example.banknator.accounts.dto.PostNewAccountInformation;
+import com.example.banknator.applications.HiringApplicationService;
+import com.example.banknator.applications.dto.PostNewHireApp;
+import com.example.banknator.applications.dto.PostUpdateHireApp;
+import com.example.banknator.bank.BankService;
+import com.example.banknator.bank.dto.PostNewBank;
+import com.example.banknator.entity.HiringApplication;
 import com.example.banknator.transactions.TransactionService;
 import com.example.banknator.transactions.dto.PostNewTransaction;
 import com.example.banknator.users.UserService;
@@ -23,12 +31,17 @@ public class BanknatorApplication implements CommandLineRunner {
     protected final UserService userService;
     protected final AccountService accountService;
     protected final TransactionService transactionService;
+    protected final BankService bankService;
+
+    protected final HiringApplicationService hiringApplicationService;
     private final Logger logger = LoggerFactory.getLogger(BanknatorApplication.class);
 
-    public BanknatorApplication(UserService userService, AccountService accountService, TransactionService transactionService) {
+    public BanknatorApplication(UserService userService, AccountService accountService, TransactionService transactionService, BankService bankService, HiringApplicationService hiringApplicationService) {
         this.userService = userService;
         this.accountService = accountService;
         this.transactionService = transactionService;
+        this.bankService = bankService;
+        this.hiringApplicationService = hiringApplicationService;
     }
 
     public static void main(String[] args) {
@@ -44,6 +57,11 @@ public class BanknatorApplication implements CommandLineRunner {
                 "456 Oak St, Townsville", 9876543210L, 800, "1985-05-15"));
         logger.info(userService.createUserInformation(new PostNewUserInformation("Matthew", "Martin", "admin@horrorbank.com", "Gudmord92!",
                 "106 Mace St", 5036803865L, 517, "1992-07-21")).toString());
+        logger.info("Creating Bank: "+bankService.createBank(new PostNewBank("Horrorbank Bristol Branch", 50000000.00)).message());
+        hiringApplicationService.createHiringApp(new PostNewHireApp(1L, BankPosition.IT_SUPPORT, 500000.00, 3L));
+        hiringApplicationService.updateApplicationStatus(ApplicationStatus.APPROVED, hiringApplicationService.getAllApps().getFirst());
+        hiringApplicationService.createHiringApp(new PostNewHireApp(1L, BankPosition.TELLER, 35000.00, 1L));
+        hiringApplicationService.createHiringApp(new PostNewHireApp(1L, BankPosition.GENERAL_MANAGER, 450000.00, 2L));
         accountService.createAccount(new PostNewAccountInformation(1, AccountType.CHECKING, 0.0));
         accountService.createAccount(new PostNewAccountInformation(1, AccountType.SAVING, 0.0));
         accountService.createAccount(new PostNewAccountInformation(2, AccountType.CHECKING, 0.0));

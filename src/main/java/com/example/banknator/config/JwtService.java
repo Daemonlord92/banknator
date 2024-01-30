@@ -44,6 +44,8 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.get().getRole());
         claims.put("firstName", user1.getFirstName());
+        claims.put("userProfileId", user1.getUserId());
+        claims.put("ucId", user.get().getId());
         return generateToken(claims, user.get());
     }
 
@@ -57,6 +59,7 @@ public class JwtService {
         claims.put("firstName", user1.getFirstName());
         claims.put("role", user.get().getRole());
         claims.put("userProfileId", user1.getUserId());
+        claims.put("ucId", user.get().getId());
         return generateToken(claims, userDetails);
     }
 

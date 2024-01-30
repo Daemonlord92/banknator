@@ -15,7 +15,7 @@ public class HiringApplication {
     private Double requestedSalary;
     private ApplicationStatus applicationStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     private UserProfile userProfile;
 

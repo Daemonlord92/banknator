@@ -25,7 +25,7 @@ public class UserProfile {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     private UserCredential userCredential;
 

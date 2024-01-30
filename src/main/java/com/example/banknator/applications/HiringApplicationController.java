@@ -25,6 +25,11 @@ public class HiringApplicationController {
         return new ResponseEntity<>(hiringApplicationService.getAllApps(), HttpStatus.FOUND);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<List<HiringApplication>> getAppsById(@PathVariable Long id) {
+        return new ResponseEntity<>(hiringApplicationService.getAppsByUserProfileId(id), HttpStatus.FOUND);
+    }
+
     @PostMapping("/")
     public ResponseEntity<MessageResponse> postNewApp(@RequestBody PostNewHireApp request) {
         return new ResponseEntity<>(hiringApplicationService.createHiringApp(request), HttpStatus.ACCEPTED);

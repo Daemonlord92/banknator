@@ -32,18 +32,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        /*if(System.getenv().get("OS").equals("Windows_NT")) {
             http
                     .csrf(AbstractHttpConfigurer::disable)
                     .cors(cor -> cor.configurationSource(corsFilter()))
                     .authorizeHttpRequests(htp -> htp
-                            .anyRequest().permitAll());
-        } else {*/
-            http
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .cors(cor -> cor.configurationSource(corsFilter()))
-                    .authorizeHttpRequests(htp -> htp
-                            .requestMatchers("/apiv1/auth/**")
+                            .requestMatchers("/apiv1/auth/**", "/swagger-ui/**", "/api-docs/**")
                             .permitAll()
                             .anyRequest()
                             .authenticated())

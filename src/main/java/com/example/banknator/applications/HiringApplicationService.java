@@ -14,4 +14,6 @@ public interface HiringApplicationService {
     MessageResponse updateApplication(PostUpdateHireApp request);
     MessageResponse withdrawApplication(HiringApplication application);
     List<HiringApplication> getAllApps();
+
+    List<HiringApplication> getAppsByUserProfileId(Long id);
 }
