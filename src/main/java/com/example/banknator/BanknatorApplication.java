@@ -59,7 +59,7 @@ public class BanknatorApplication implements CommandLineRunner {
                 "106 Mace St", 5036803865L, 517, "1992-07-21")).toString());
         logger.info("Creating Bank: "+bankService.createBank(new PostNewBank("Horrorbank Bristol Branch", 50000000.00)).message());
         hiringApplicationService.createHiringApp(new PostNewHireApp(1L, BankPosition.IT_SUPPORT, 500000.00, 3L));
-        hiringApplicationService.updateApplicationStatus(ApplicationStatus.APPROVED, hiringApplicationService.getAllApps().getFirst());
+        hiringApplicationService.updateApplicationStatus(ApplicationStatus.APPROVED, hiringApplicationService.getAllApps().get(0));
         hiringApplicationService.createHiringApp(new PostNewHireApp(1L, BankPosition.TELLER, 35000.00, 1L));
         hiringApplicationService.createHiringApp(new PostNewHireApp(1L, BankPosition.GENERAL_MANAGER, 450000.00, 2L));
         accountService.createAccount(new PostNewAccountInformation(1, AccountType.CHECKING, 0.0));

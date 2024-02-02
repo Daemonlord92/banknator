@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Feb 02 19:35:00 UTC 2024
+testcontainers-1.19.4.jar>central=
+testcontainers-1.19.4.pom>central=
