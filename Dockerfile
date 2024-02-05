@@ -1,6 +1,7 @@
 FROM openjdk:21-ea-18-jdk-buster as base
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install redis -y
+RUN redis-server
 
 LABEL author="Matthew Jeshua Martin"
 

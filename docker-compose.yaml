@@ -27,7 +27,7 @@ services:
     volumes:
       - .m2:/root/.m2
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://banknator-mysql-1:3306/banknator?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/banknator?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
       SPRING_DATASOURCE_USERNAME: banknatordb
       SPRING_DATASOURCE_PASSWORD: Gudmord92!
 
