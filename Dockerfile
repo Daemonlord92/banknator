@@ -1,7 +1,5 @@
 FROM openjdk:21-ea-18-jdk-buster as base
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install redis -y
-RUN redis-server
 
 LABEL author="Matthew Jeshua Martin"
 
@@ -14,6 +12,8 @@ ENV PATH="${JAVA_HOME}/bin:${PATH}"
 COPY mvnw mvnw.cmd ./
 COPY .mvn/ .mvn/
 COPY pom.xml ./
+
+RUN chmod +x ./mvnw
 
 RUN ./mvnw dependency:resolve
 
